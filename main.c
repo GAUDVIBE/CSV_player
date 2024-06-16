@@ -15,7 +15,7 @@ typedef struct {
     int field_count;
 } CSVLine;
 
-// Fonction pour lire une ligne CSV et la stocker dans une structure CSVLine
+// Function for reading a CSV line and store it into a struct csv_line
 void parse_csv_line(char* line, CSVLine* csv_line) {
     char* token;
     char* rest = line;
@@ -28,7 +28,7 @@ void parse_csv_line(char* line, CSVLine* csv_line) {
     }
 }
 
-// Fonction pour écrire une structure CSVLine dans une ligne CSV
+// Function for write a struct CSVLine into CSV
 void write_csv_line(FILE* file, CSVLine* csv_line) {
     for (int i = 0; i < csv_line->field_count; i++) {
         fprintf(file, "%s", csv_line->fields[i]);
@@ -140,12 +140,12 @@ int FunctionStoreGameData(const char *data, short int file_id, short int coord_x
     fclose(temp_file);
 
     if (remove(file_path) != 0) {
-        perror("Erreur lors de la suppression du fichier d'origine");
+        perror("ERROR removing original file");
         return EXIT_FAILURE;
     }
 
     if (rename("game_data/temp.csv", file_path) != 0) {
-        perror("Erreur lors du renommage du fichier temporaire");
+        perror("ERROR remane temp file");
         return EXIT_FAILURE;
     }
     printf("Storage successful");
@@ -166,7 +166,7 @@ const char *CSV_reader(int file_ID, int coord_x, int coord_y) {
     /*if (ask) {
         printf("Result: %s\n", ask);
     } else {
-        printf("ERROR_CSV_Reader_Data not found.\n");
+        printf("ERROR CSV_reader: Data not found.\n");
     }*/
     return ask;
 }
@@ -239,7 +239,7 @@ int main() {
     printf("result: %s\n", result);
 
     // Function call to modify result data
-    printf("Modify this data ?");
+    printf("Want to modify this data ?");
     char input_keyboard = getYesNoResponse();
     
     if (input_keyboard == 'y') 
