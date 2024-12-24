@@ -131,7 +131,7 @@ const char* ReturnGameDataFolder(short int file_id, short int x, short int y) {
                 strncpy(result, csv_line.fields[y], MAX_FIELD_LENGTH - 1);
                 result[MAX_FIELD_LENGTH - 1] = '\0';
                 fclose(fp);
-                printf("Path: %s\n", file_path);
+                //printf("Path: %s\n", file_path);
                 return result;
             }
         }
@@ -204,14 +204,15 @@ const char *CSV_reader(int file_ID, int coord_x, int coord_y) {
         return 0;
     }
 
-    printf("ID: %d x: %d y: %d\nLoading...\n", file_ID, coord_x, coord_y);
-
+    //printf("ID: %d x: %d y: %d\nLoading...\n", file_ID, coord_x, coord_y);
     const char *ask = ReturnGameDataFolder(file_ID, coord_x, coord_y);
-    /*if (ask) {
+    /*
+    if (ask) {
         printf("Result: %s\n", ask);
     } else {
         printf("ERROR CSV_reader: Data not found.\n");
-    }*/
+    }
+    */
     return ask;
 }
     
@@ -320,55 +321,33 @@ int main() {
     char action [100] ;
     printf("What do u want to do ? : ");
     scanf("%10s", action);
-    printf("You decided to :  %s\n", action);
 
-    /*
     if (strcmp(action, "attack") == 0) {
-
-    player_folder = 6 ; // players.csv
-    const char *player_data_amount = CSV_reader(player_folder, xplayer, yattack);
-    printf("player attack : %s\n", player_data_amount);
-    const char *opponent_data_amount = player_data_amount - ModifyData(opponent_folder, xopponent, yhp);
-    printf("Opponent data : %s", opponent_data_amount); 
-
+        printf("You decided to :  %s\n", action);
+        player_folder = 6; // players.csv
+        // read player HP
+        const char *player_data_amount_str = CSV_reader(player_folder, xplayer, yattack);
+        int player_attack = atoi(player_data_amount_str); // Convert
+        printf("Player attack: %d\n", player_attack);
+         // read opponent HP
+        const char *opponent_data_amount_str = CSV_reader(opponent_folder, xopponent, yhp);
+        int opponent_hp = atoi(opponent_data_amount_str); // Convert
+        printf("Opponent HP before: %d\n", opponent_hp);
+        // Calcul new opponent's HP
+        opponent_hp -= player_attack;
+        printf("Opponent HP after: %d\n", opponent_hp);
+        // write new opponent HP in CSV
+        char opponent_hp_str[MAX_FIELD_LENGTH];
+        snprintf(opponent_hp_str, MAX_FIELD_LENGTH, "%d", opponent_hp);
+        FunctionStoreGameData(opponent_hp_str, opponent_folder, xopponent, yhp);
     }
-    */
-    if (strcmp(action, "attack") == 0) {
-    player_folder = 6; // players.csv
-
-    // read player HP
-    const char *player_data_amount_str = CSV_reader(player_folder, xplayer, yattack);
-    int player_attack = atoi(player_data_amount_str); // Convert
-    printf("Player attack: %d\n", player_attack);
-
-    // read opponent HP
-    const char *opponent_data_amount_str = CSV_reader(opponent_folder, xopponent, yhp);
-    int opponent_hp = atoi(opponent_data_amount_str); // Convert
-    printf("Opponent HP before: %d\n", opponent_hp);
-
-    // Calcul new opponent's hp
-    opponent_hp -= player_attack;
-    printf("Opponent HP after: %d\n", opponent_hp);
-
-    // write new opponent hp in CSV
-    char opponent_hp_str[MAX_FIELD_LENGTH];
-    snprintf(opponent_hp_str, MAX_FIELD_LENGTH, "%d", opponent_hp);
-    FunctionStoreGameData(opponent_hp_str, opponent_folder, xopponent, yhp);
-    }
-    
-
     else if (strcmp(action, "spell") == 0) { // 'have to code this
-
-    // const char *result = CSV_reader(folder, xplayer, yattack); 
-    // printf("RESULT : %s", result);
-    printf("Action not done yet...\n");
-
+        // const char *result = CSV_reader(folder, xplayer, yattack); 
+        // printf("RESULT : %s", result);
+        printf("Action not done yet...\n");
     }
     else {
         printf("Unknown action. (%s)\n", action);
     }
-
-
-
-    return 0;
+return 0;
 }
